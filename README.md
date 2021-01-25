@@ -1,5 +1,15 @@
 # 兴盛优选商城
 
+### 开发前必须阅读
+1. [taro社区资源](https://taro-docs.jd.com/taro/docs/composition)
+2. [taro小程序开发注意事项](https://taro-docs.jd.com/taro/docs/before-dev-remind)
+3. [taro基础教程](https://taro-docs.jd.com/taro/docs/react)
+4. [ts入门教程](https://ts.xcatliu.com/)
+5. [react官方文档](https://react.docschina.org/)
+
+**【注意】：** taro文档中的基础教程篇需要看完，内容不是很多
+
+
 ### 项目运行
 1. 先拉取项目依赖
 ```
@@ -48,7 +58,7 @@ npm run dev:weapp
 ```
 
 ### 项目使用就近原则
-1. 如页面文件创建（静态资源考虑以后可能传入云端，所以不考虑就近）
+1. 如页面文件创建（静态资源考虑以后可能传入云端，所以不考虑就近），如就近原则不满足，则一层层外移
 ```
   |─── pages
   |─── home                 页面
@@ -58,3 +68,26 @@ npm run dev:weapp
   |     |—— index.config.ts    页面配置
   |     └── index.tsx          项目页面
 ```
+2. 分包约束：页面以同一个模块内容分包，比如首页home页面相关的二级页面为同一个模块，个人中心下的二级页面为一个模块，公共的二级页面单独分包，这样做的好处是尽可能的让下载的分包速度快，并且是相关的。注意不要滥分包
+```js
+subPackages: [
+  {
+    root: 'pages/home/moudle_name',
+    name: 'moudle_name',
+    pages: [
+      'page_name_1', // 页面路径 pages/home/moudle_name/page_name_1
+      'page_name_2', // 页面路径 pages/home/moudle_name/page_name_2
+    ]
+  },
+  {
+    root: 'pages/home/common_moudle_name_1',
+    name: 'common_moudle_name_1',
+    pages: [
+      'page_name_1', // 页面路径 pages/home/common_moudle_name_1/page_name_1
+      'page_name_2', // 页面路径 pages/home/common_moudle_name_1/page_name_2
+    ]
+  }
+]
+```
+
+   

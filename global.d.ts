@@ -27,6 +27,7 @@ declare const my: {
   topicMap: Map<string, {
     callBackSet: Set<(event: any) => boolean | Promise<boolean>>
   }>
+  mobxInstance: any, // mobox
 }
 
 declare namespace NodeJS {
