@@ -25,7 +25,7 @@ npm run dev:weapp
      |     ├─── components    组件适配器，如多端map组件等
 |    |     ├─── api           api适配器，如getLocaltion等
 |    ├─── api                 项目api
-|    |     ├─── config        各端 api baseUrl 配置
+|    |     ├─── config        各个环境 api baseUrl 配置
 |    |     ├─── mock          api mock数据
 |    |     ├─── modal         api定义文件
 |    |     └─── index.ts      请求封装函数
@@ -50,10 +50,11 @@ npm run dev:weapp
 ### 项目使用就近原则
 1. 如页面文件创建（静态资源考虑以后可能传入云端，所以不考虑就近）
 ```
-  |─── pages             页面
-  | └─── components      页面公共组件
-  |  |─── utils          页面公共方法
-  |  └─── config         页面公共配置
-  |—— index.config.ts    页面配置
-  └── index.tsx          项目页面
+  |─── pages
+  |─── home                 页面
+  |     |─── components     页面公共组件
+  |     |─── utils          页面公共方法
+  |     |─── config         页面公共config
+  |     |—— index.config.ts    页面配置
+  |     └── index.tsx          项目页面
 ```
