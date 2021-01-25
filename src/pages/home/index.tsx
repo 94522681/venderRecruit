@@ -1,28 +1,18 @@
 import React, { Component } from 'react'
 import { View, Button, Text } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
+// import PageWarp from '../..//components/page_warp'
 
 import './index.less'
 
 type PageStateProps = {
   store: {
-    counterStore: {
-      counter: number,
-      increment: Function,
-      decrement: Function,
-      incrementAsync: Function
-    }
+    counterStore: IStore.CounterStore
   }
 }
 
 interface Index {
   props: PageStateProps;
-}
-
-function Say () {
-  return (
-    <View>234242423</View>
-  )
 }
 
 @inject('store')
@@ -57,8 +47,9 @@ class Index extends Component {
     const { counterStore: { counter } } = this.props.store
     return (
       <View className='index'>
+        {/* <PageWarp>
+        </PageWarp> */}
         <View>this is a home</View>
-        <Say/>
         <Button onClick={this.increment}>+</Button>
         <Button onClick={this.decrement}>-</Button>
         <Button onClick={this.incrementAsync}>Add Async</Button>
