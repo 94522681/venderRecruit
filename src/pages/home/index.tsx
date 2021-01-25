@@ -19,6 +19,12 @@ interface Index {
   props: PageStateProps;
 }
 
+function Say () {
+  return (
+    <View>234242423</View>
+  )
+}
+
 @inject('store')
 @observer
 class Index extends Component {
@@ -52,6 +58,7 @@ class Index extends Component {
     return (
       <View className='index'>
         <View>this is a home</View>
+        <Say/>
         <Button onClick={this.increment}>+</Button>
         <Button onClick={this.decrement}>-</Button>
         <Button onClick={this.incrementAsync}>Add Async</Button>
