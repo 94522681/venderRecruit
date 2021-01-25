@@ -1,5 +1,15 @@
 # 兴盛优选商城
 
+### 开发前必须阅读
+1. [taro社区资源](https://taro-docs.jd.com/taro/docs/composition)
+2. [taro小程序开发注意事项](https://taro-docs.jd.com/taro/docs/before-dev-remind)
+3. [taro基础教程](https://taro-docs.jd.com/taro/docs/react)
+4. [ts入门教程](https://ts.xcatliu.com/)
+5. [react官方文档](https://react.docschina.org/)
+
+**【注意】：** taro文档中的基础教程篇需要看完，内容不是很多
+
+
 ### 项目运行
 1. 先拉取项目依赖
 ```
