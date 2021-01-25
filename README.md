@@ -34,8 +34,9 @@ npm run dev:weapp
 |    |─── config              项目配置
 |    |     ├─── env.ts        小程序环境
 |    |     ├─── eventKeys.ts  Event Bus key 哈希表
-|    |     ├─── index.js
-|    |     └─── localStoragegKeys.ts   localStorage key 哈希表
+|    |     ├─── localStoragegKeys.ts   localStorage key 哈希表
+|    |     └─── routes.ts     页面路由 哈希表
+|    |     └─── index.js
 |    ├─── pages    页面
 |    ├─── store    状态管理
 |    └─── utils    项目公共函数
