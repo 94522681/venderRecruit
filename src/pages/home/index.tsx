@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { View, Button, Text } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
-// import PageWarp from '../..//components/page_warp'
+import PageWarp from '../../components/page_warp'
+import SXButton from '../../components/button'
 
 import './index.less'
 
@@ -43,18 +44,31 @@ class Index extends Component {
     counterStore.incrementAsync()
   }
 
+  onHander = () => {
+    console.log('42342423')
+  }
+
   render () {
     const { counterStore: { counter } } = this.props.store
     return (
-      <View className='index'>
-        {/* <PageWarp>
-        </PageWarp> */}
-        <View>this is a home</View>
-        <Button onClick={this.increment}>+</Button>
-        <Button onClick={this.decrement}>-</Button>
-        <Button onClick={this.incrementAsync}>Add Async</Button>
-        <Text>{counter}</Text>
-      </View>
+      <PageWarp>
+        <View className='index'>
+          <View>this is a home</View>
+          <SXButton onClick={this.onHander} size='mini'>2342</SXButton>
+          <Button onClick={this.increment}>+</Button>
+          <Button onClick={this.decrement}>-</Button>
+          <Button onClick={this.incrementAsync}>Add Async</Button>
+          <Text>{counter}</Text>
+          <View className='box'></View>
+          <View className='box'></View>
+          <View className='box'></View>
+          <View className='box'></View>
+          <View className='box'></View>
+          <View className='box'></View>
+          <View className='box'></View>
+          <View className='box'></View>
+        </View>
+      </PageWarp>
     )
   }
 }

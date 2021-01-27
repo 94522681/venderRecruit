@@ -6,6 +6,7 @@
 3. [taro基础教程](https://taro-docs.jd.com/taro/docs/react)
 4. [ts入门教程](https://ts.xcatliu.com/)
 5. [react官方文档](https://react.docschina.org/)
+6. [mobx官方文档](https://cn.mobx.js.org/)
 
 **【注意】：** taro文档中的基础教程篇需要看完，内容不是很多
 
