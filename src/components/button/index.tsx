@@ -15,6 +15,7 @@ class SXButton extends React.PureComponent<IProps, any> {
     super(props)
 
     const { debounceTime = 1000 } = props || {}
+    
     this.onClickHander = debounce(() => {
       const { onClick } = this.props
       if (onClick) onClick()
@@ -31,21 +32,5 @@ class SXButton extends React.PureComponent<IProps, any> {
     )
   }
 }
-
-// function SXButton (props: IProps) {
-//   const {  } = 
-//   // button按钮的防抖处理，避免按钮的重复点击
-  // const onClickHander = debounce(() => {
-  //   const { onClick } = props
-  //   if (onClick) onClick()
-  // }, 500)
-
-//   return (
-//     <Button
-//       {...props}
-//       onClick={onClickHander}
-//     >{props.children}</Button>
-//   )
-// }
 
 export default SXButton
