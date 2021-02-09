@@ -28,16 +28,17 @@
     ```
 4. `react` 中常用写法定义
     ```tsx
-      // 组件定义， 写法一
+     
+      interface IProps {}
+      interface IState {}
       interface ComponentName {
         props: IProps
         state: IState
       }
+       // 组件定义， 写法一
       class ComponentName extends React.Component {}
 
       // 组件定义， 写法二
-      interface IProps {}
-      interface IState {}
       class ComponentName extends React.Component<IProps, IState> {}
 
       // hook 类型定义
