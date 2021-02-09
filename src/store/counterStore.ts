@@ -7,8 +7,9 @@ export interface ICounterStore {
   incrementAsync: Function
 }
 
-class counterStore implements ICounterStore {
+class counterStore {
   @observable counter = 0
+
 
   @action increment () {
     this.counter++

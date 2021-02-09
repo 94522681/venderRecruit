@@ -18,12 +18,12 @@ module.exports = {
         ]
       }
     ],
-    "react/sort-comp": "off",
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-closing-bracket-location": "off",
-    "eslintreact/no-multi-comp": "no",
-    "import/prefer-default-export": "off",
-    "space-before-function-paren": "off",
+    "react/sort-comp": 0,
+    "react/react-in-jsx-scope": 0,
+    "react/jsx-closing-bracket-location": 0,
+    "eslintreact/no-multi-comp": 0,
+    "import/prefer-default-export": 0,
+    "space-before-function-paren": 0,
     // 函数定义时括号前面要不要有空格
     "semi": [
       1,

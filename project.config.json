@@ -2,7 +2,7 @@
   "miniprogramRoot": "dist/",
   "projectname": "xsyx-app",
   "description": "兴盛优选商城",
-  "appid": "wx8f77bd2760ed1138",
+  "appid": "wx11c47ad40ae04c48",
   "setting": {
     "urlCheck": true,
     "es6": false,
@@ -23,7 +23,7 @@
     "compileHotReLoad": false,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
-    "useApiHostProcess": true,
+    "useApiHostProcess": false,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],

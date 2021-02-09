@@ -1,22 +1,3 @@
-/**
- * ** 使用文档 **
- * 
- *【订阅监听】
- * const event = EventBus.on(key, (res) => {
- *    // do something ...
- *    return false // 如果返回true，则阻断在此监听后定义的同一个key的监听回调
- * })
- * 
- *【移出单个监听】
- * event.remove() // 移出此监监听，不会取消其他页面的key下的监听回调
- * 
- *【移出所有监听】
- * event.off(key)
- * 
- *【发布事件】
- * EventBus.emit(key, data)
- */
-
 type CallBack = (event: any) => boolean | Promise<boolean>
 
 interface Bus {
@@ -37,10 +18,18 @@ export default class EventBus {
   private static topicMap = process.env.TARO_ENV === 'alipay' ? my.topicMap : global.topicMap
 
   /**
-   * 订阅事件
+   * 【订阅事件】
+   * ```
+   * const event = EventBus.on(key, (res) => {
+   *    // do something ...
+   *    return false // 如果返回true，则阻断在此监听后定义的同一个key的监听回调
+   * })
+   * event.remove() // 移出当前事件监听，不会影响其他页面的事件key下的监听回调
+   * ```
    * @param topic 主题
    * @param listener 监听
    * @returns 是否拦截事件传递，返回true，则后续的订阅都接收不到
+   * 
    */
   public static on<T>(topic: string, listener: (event: T) => boolean | Promise<boolean>): IBusOn | undefined {
     if (!EventBus.topicMap.has(topic)) {
@@ -60,7 +49,10 @@ export default class EventBus {
   }
 
   /**
-   * 发布事件
+   * 【发布事件】
+   * ```ts
+   * EventBus.emit([发布的事件], [发布的数据])
+   * ```
    * @param topic 主题
    * @param event 事件
    */
@@ -79,7 +71,10 @@ export default class EventBus {
   }
 
   /**
-   * 移除该主题下的所有监听，会将其topic对应下的所有listener都清掉
+   * 【移除该主题下的所有监听，会将其topic对应下的所有listener都清掉】
+   * ```ts
+   * EventBus.off([事件名])
+   * ```
    * @param topic 主题
    */
   public static off(topic: string) {

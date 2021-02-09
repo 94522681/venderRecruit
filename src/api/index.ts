@@ -43,7 +43,7 @@ interface IDefaultParams {
 const formatResult = (response, statusCode) => {
   let requestResult
   if (typeof response === 'string') {
-    requestResult = { code: -1, data: '' }
+    requestResult = { code: -1, data: '', msg: '' }
   } else if (typeof response === 'object') {
     requestResult = {...response}
 
@@ -115,8 +115,10 @@ export function httpRequest<T>(
   : 'application/json'
   
   // TODO: 设置用户token
-  params.header['userKey'] = '133'
-  
+  // if (isLogin && !userKey) {
+  //   params.header['userKey'] = getUserKey()
+  // }
+ 
   return new Promise((resolve) => {
     const complete = (res) => {
       if (loading) {
