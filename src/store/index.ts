@@ -2,7 +2,7 @@ import counterStore from './counterStore'
 // import page_warp from './page_warp'
 
 class MobxStore {
-  private static mobxInstance: MobxStore
+  static mobxInstance: MobxStore
   private store: any
 
   constructor() {
@@ -12,7 +12,7 @@ class MobxStore {
     }
   }
 
-  public static instance() {
+  static instance() {
     if (process.env.TARO_ENV === 'alipay') {
       if (!my.mobxInstance) {
         my.mobxInstance = new MobxStore()
