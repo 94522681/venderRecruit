@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import config from '../config/index'
 import hostApi from '../config/index'
 
-const { env, version } = config
+const { version } = config
 
 type IMethod = "GET" | "POST" | "PUT" | "OPTIONS" | "HEAD" | "DELETE" | "TRACE" | "CONNECT"
 

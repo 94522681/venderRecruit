@@ -15,7 +15,7 @@ if (process.env.TARO_ENV === 'alipay') {
 }
 
 export default class EventBus {
-  private static topicMap = process.env.TARO_ENV === 'alipay' ? my.topicMap : global.topicMap
+  static topicMap = process.env.TARO_ENV === 'alipay' ? my.topicMap : global.topicMap
 
   /**
    * 【订阅事件】

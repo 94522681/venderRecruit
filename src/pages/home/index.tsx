@@ -43,16 +43,6 @@ function RenderHi () {
 @inject('store')
 @observer
 class Index extends Component {
-  componentWillMount () { }
-
-  componentDidMount () { }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
   increment = () => {
     const { counterStore } = this.props.store
     counterStore.increment()
@@ -80,7 +70,6 @@ class Index extends Component {
         <View className='index'>
           <View>this is a home</View>
           <SXButton onClick={this.onHander} size='default' disabled>
-            <View>wwwwwwwww</View>
           </SXButton>
           <Button onClick={this.increment}>+</Button>
           <Button onClick={this.decrement}>-</Button>

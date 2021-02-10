@@ -148,7 +148,7 @@ function round(num: number, ratio: number): number {
  * @param value 值
  * @param num 保留的小数点后位数
  */
-export function keepDecimal (value: number, num: number) {
+function keepDecimal (value: number, num: number) {
   value = toNumber(value)
   const dotIndex = String(value).indexOf('.')
   // 没有小数点
@@ -159,7 +159,7 @@ export function keepDecimal (value: number, num: number) {
   return val.slice(0, dotIndex + num + 1).join('')
 }
 
-export {
+const numberPrecision = {
   strip,
   plus,
   minus,
@@ -168,16 +168,9 @@ export {
   round,
   digitLength,
   float2Fixed,
+  keepDecimal,
   enableBoundaryChecking
 }
-export default {
-  strip,
-  plus,
-  minus,
-  times,
-  divide,
-  round,
-  digitLength,
-  float2Fixed,
-  enableBoundaryChecking
-}
+
+export default numberPrecision
+
