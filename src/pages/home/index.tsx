@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import PageWarp from '../../components/page_warp'
 import SXButton from '../../components/button'
 import { toJS } from 'mobx'
+import { System } from '../../utils'
 
 import './index.less'
 
@@ -43,6 +44,11 @@ function RenderHi () {
 @inject('store')
 @observer
 class Index extends Component {
+
+  componentDidMount () {
+    console.log('2342342342', System)
+  }
+  
   increment = () => {
     const { counterStore } = this.props.store
     counterStore.increment()
@@ -69,7 +75,8 @@ class Index extends Component {
       <PageWarp >
         <View className='index'>
           <View>this is a home</View>
-          <SXButton onClick={this.onHander} size='default' disabled>
+          <SXButton onClick={this.onHander} size='default'>
+            1231
           </SXButton>
           <Button onClick={this.increment}>+</Button>
           <Button onClick={this.decrement}>-</Button>

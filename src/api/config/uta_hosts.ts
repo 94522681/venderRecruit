@@ -1,6 +1,6 @@
 const UTA_HOST = {
   // 会员端接口（如：登陆、用户信息、订单列表等）
-  api: "https://uath5.xsyxsc.cn",
+  api: "https://uath5.xsyxsc.cn/api",
   //交易接口 订单 支付
   tradeApi: "https://uattrade.xsyxsc.cn",
   // 通用埋点配置接口

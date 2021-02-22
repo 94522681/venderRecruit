@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import config from '../config/index'
-import hostApi from '../config/index'
+import hostApi from '../api/config/index'
 
 const { version } = config
 
@@ -16,6 +16,7 @@ interface IHttpRequestOpt {
   header?: IHeader // 请求header
   repeat?: number // 重复请求次数
   loading?: string // loading 文案
+  isLogin?: boolean
 }
 
 export interface IResult<T> {
@@ -97,11 +98,9 @@ export function httpRequest<T>(
   data: IHttpRequestData = {},
   opt: IHttpRequestOpt = {}
 ): Promise<IResult<T>> {
-  const { header, loading = '' } = opt || {}
+  const { header, loading = '', isLogin = true } = opt || {}
   // 获取请求url
-  const currentUrl = url.replace(/^\/([\w\d]+)\//, (a1, a2) =>
-    a2 && hostApi[a2] ? `${hostApi[a2]}/` : a1
-  )
+  const currentUrl = url.replace(/^\/([\w\d]+)\//, (a1, a2) => a2 && hostApi[a2] ? `${hostApi[a2]}/` : a1)
   // 请求参数
   let params: IDefaultParams = { method, data, url: currentUrl }
 
@@ -113,11 +112,10 @@ export function httpRequest<T>(
   params.header['Content-type'] = (method.toLowerCase() === 'post' || method.toLowerCase() === 'get')
   ? 'application/x-www-form-urlencoded'
   : 'application/json'
-  
   // TODO: 设置用户token
-  // if (isLogin && !userKey) {
-  //   params.header['userKey'] = getUserKey()
-  // }
+  if (isLogin) {
+    // params.header['userKey'] = getUserKey()
+  }
  
   return new Promise((resolve) => {
     const complete = (res) => {
