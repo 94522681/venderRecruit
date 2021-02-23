@@ -1,6 +1,7 @@
-import Taro from '@tarojs/taro'
+import Taro, { request } from '@tarojs/taro'
 import config from '../config/index'
 import hostApi from '../api/config/index'
+import { getUserKey } from '../utils/login'
 
 const { version } = config
 
@@ -16,14 +17,14 @@ interface IHttpRequestOpt {
   header?: IHeader // 请求header
   repeat?: number // 重复请求次数
   loading?: string // loading 文案
-  isLogin?: boolean
+  isLogin?: boolean // 是否需要登录
+  timeout?: number // 超时时间
 }
 
 export interface IResult<T> {
   code: number;
   msg: string;
-  data?: T;
-  result?: T;
+  data: T;
   error?: number;
   status?: number;
   header?: object;
@@ -32,7 +33,7 @@ export interface IResult<T> {
 interface IDefaultParams {
   method: IMethod
   url: string
-  data?: IHttpRequestData
+  data: IHttpRequestData
   header?: IHeader
 }
 
@@ -41,45 +42,21 @@ interface IDefaultParams {
  * @param {object} response 接口返回的response
  * @param {number} statusCode 接口status
  */
-const formatResult = (response, statusCode) => {
-  let requestResult
+const formatResult = (response, statusCode)  => {
+  let requestResult = { code: 0, data: '', msg: '' }
   if (typeof response === 'string') {
-    requestResult = { code: -1, data: '', msg: '' }
+    requestResult = { code: 0, data: response, msg: '' }
   } else if (typeof response === 'object') {
-    requestResult = {...response}
+    requestResult.code = response.rspCode && response.rspCode === 'success' ? 0 : response.rspCode || -1
+    // 如果有data
+    if ('data' in response) {
+      requestResult.data = response.data
+    }
 
     if ('msg' in response || 'message' in response) {
       requestResult.msg = response.msg || response.message || ''
     } else {
       requestResult.msg = 'success'
-    }
-
-    if ('data' in response) {
-      if (response.data !== undefined) {
-        requestResult.data = response.data
-      } else {
-        requestResult.data = response.result
-      }
-    } else {
-      requestResult.data = response
-    }
-  }
-  // TODO: 需要根据实际情况判断哪些状态为正常返回
-  if (statusCode === 200) {
-    requestResult.code = 0
-  } else {
-    requestResult.code = response.code || statusCode
-  }
-  // 设置请求失败的msg
-  if (typeof requestResult.msg === 'undefined') {
-    if (requestResult.code >= 400) {
-      if (requestResult.code < 500) {
-        requestResult.msg = '请求出错'
-      } else if (requestResult.code < 600) {
-        requestResult.msg = '服务出小差啦'
-      } else if (requestResult.code === 600) {
-        requestResult.msg = '网络开小差了'
-      }
     }
   }
   return requestResult
@@ -112,46 +89,56 @@ export function httpRequest<T>(
   params.header['Content-type'] = (method.toLowerCase() === 'post' || method.toLowerCase() === 'get')
   ? 'application/x-www-form-urlencoded'
   : 'application/json'
-  // TODO: 设置用户token
+  // 设置用户token
   if (isLogin) {
-    // params.header['userKey'] = getUserKey()
+    params.header['userKey'] = getUserKey()
+    params.data['userKey'] = getUserKey()
   }
  
   return new Promise((resolve) => {
-    const complete = (res) => {
-      if (loading) {
-        Taro.hideLoading()
+    loading && Taro.showLoading({ title: loading || '加载中...' })
+
+    /**
+     * 接口请求成功后的通用处理逻辑函数
+     * @param result 
+     */
+    const requestComplete = (result: IResult<T>) => {
+      loading && Taro.hideLoading()
+
+      if (result.code !== 0) {
+        // TODO: 请求接口错误处理，需要将code白名单中的剔除
       }
-      // 格式化返回参数
-      const requestResult = {
-        ...formatResult(res, res.statusCode),
-        header: res.header || {},
-        statusCode: res.statusCode
-      }
-      // 重复请求次数
-      if (opt.repeat && opt.repeat > 0) {
-        opt.repeat = opt.repeat - 1
-        // TODO: ....
-      }
-      // 登录token过期或者未登录
-      if (requestResult.code === 1002 || requestResult.code === 401) {
-        // TODO: 重新获取token并发起请求逻辑
-      }
-      // 请求成功
-      if (requestResult.code === 0) {
-        resolve(requestResult)
-      } else {
-        // 请求失败
-        // TODO: 请求错误监控，和错误处理逻辑
-      }
+      resolve(result)
     }
-    if (loading) {
-      Taro.showLoading({ title: loading || '加载中...' })
-    }
-    const requestTask = Taro.request({...params, complete})
-    console.log('----requestTask-->', requestTask)
-    if (false) {
-      requestTask.abort()
+    const requestTask = Taro.request({...params, complete: (res: request.SuccessCallbackResult) => {
+        // 格式化返回参数
+        const requestResult = {
+          ...formatResult(res.data, res.statusCode),
+          header: res.header || {},
+          statusCode: res.statusCode
+        }
+        // 登录token过期或者未登录
+        if (requestResult.code === 1002 || requestResult.code === 401) {
+          // 重新获取token并发起请求逻辑
+          // @ts-ignore
+          params.header['userKey'] = getUserKey()
+          Taro.request({...params, complete: (againRes: request.SuccessCallbackResult<any>) => {
+            const requestResult = {
+              ...formatResult(againRes.data, againRes.statusCode),
+              header: againRes.header || {},
+              statusCode: againRes.statusCode
+            }
+            // @ts-ignore
+            requestComplete(requestResult)
+          }})
+        } else {
+          // @ts-ignore
+          requestComplete(requestResult)
+        }
+    }})
+    // 如果设置了超时时间
+    if (opt.timeout) {
+      setTimeout(requestTask.abort, opt.timeout);
     }
   })
 }

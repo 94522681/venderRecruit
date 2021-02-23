@@ -8,6 +8,9 @@ class Login extends React.Component {
   onGetPhoneNumber = (e) => {
     console.log(e)
     getUserKey()
+    getUserKey()
+    getUserKey()
+    getUserKey()
   }
 
   render () {

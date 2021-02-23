@@ -1,20 +1,42 @@
 import Taro from '@tarojs/taro'
-import { ApiGetSilenceLogin } from '../api/modal/login_api'
+import { ApiGetSilenceLogin } from 'src/api/modal/login_api'
+import { Storage } from 'src/adapter/api';
+import Config from 'src/config'
+import Lodash from './lodash'
+import Global from './global'
 
-export const getUserKey = async () => {
+export const getUserKey = Lodash.oneceRunFunction(async () => {
+  let userKey = Global.get('userKey')
+  if (!userKey) {
+    userKey = await Storage.getStorage(Config.localStorageKeys.userKey)
+  }
+  if (!userKey) {
+    userKey = await silenceLogin()
+  }
+  Global.set('userKey', userKey)
+  return userKey
+})
+
+/**
+ * 静默登录
+ */
+export const silenceLogin = Lodash.oneceRunFunction<string | undefined>(async () => {
   try {
-    const { code, errMsg } = await Taro.login()
-    console.log('---codecodecodecode-->', code, errMsg)
-    if (errMsg.indexOf('ok') === -1) {
-      // TODO: 登录错误处理
+    const wxLogin = await Taro.login()
+    if (wxLogin.errMsg.indexOf('ok') === -1) {
+      // TODO: 调微信登录错误处理
       return;
   }
-   const res = await ApiGetSilenceLogin({ code })
-   console.log('---resresres--->', res)
-   if (res.code === 0) {
-    //  if (res)
+   const res = await ApiGetSilenceLogin({ code: wxLogin.code })
+   const { code, data, msg } = res
+   if (code === 0 && data && data.silenceLoginResult) {
+     Storage.setStorage(Config.localStorageKeys.userKey, data.userKey)
+     return data.userKey
+   } else {
+     Taro.showToast({ title: msg, icon: 'none' })
+     return undefined
    }
   } catch (error) {
-    console.log('------>', error)
+    return undefined
   }
-}
+})

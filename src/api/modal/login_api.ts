@@ -1,6 +1,6 @@
 import { httpRequest } from '../index'
-import { Storage } from '../../adapter/api'
-import System from '../../utils/system'
+import { Storage } from 'src/adapter/api'
+import System from 'src/utils/system'
 
 
 interface IAppLoginData {
@@ -32,6 +32,7 @@ interface IGetSilenceLogin {
   code: string
   storeId?: string
 }
+
 /**
  * 获取同盾需要的系统参数
  */
@@ -60,13 +61,17 @@ export const ApiAppLogin = async (data: IAppLoginData) => {
   return httpRequest('POST', '/api/auth/auth/codeExchangeSessionKey', newData)
 }
 
+interface ISilenceLoginResult {
+  silenceLoginResult: boolean
+  userKey: string
+}
 
 /**
  * 静态登录
  */
 export const ApiGetSilenceLogin = async (data: IGetSilenceLogin) => {
   const TD = await getSystemToTD()
-  return httpRequest('POST', '/api/auth/auth/silenceLogin', { ...data, ...TD }, { isLogin: false })
+  return httpRequest<ISilenceLoginResult>('POST', '/api/auth/auth/silenceLogin', { ...data, ...TD }, { isLogin: false })
 }
 
 /**
