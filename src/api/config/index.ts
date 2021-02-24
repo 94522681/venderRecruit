@@ -2,9 +2,20 @@
  * 2021-01-08
  * hostApi
  */
-import XSYX_ENV from '../../config/env'
-import UTA_HOST from './uta_base_url'
+import config from '../../config/index'
+import UTA_HOST from './uta_hosts'
 
-const hostApi = UTA_HOST
+const hostApi = {
+  DEV: {},
+  DEV2: {},
+  Daily: {},
+  UAT: UTA_HOST,
+  UAT1: {},
+  UAT2: {},
+  UAT3: {},
+  UAT4: {},
+  PRO: {},
+  GRAY: {}
+}[config.env]
 
 export default hostApi

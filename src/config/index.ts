@@ -1,7 +1,8 @@
-import env from './env'
+import ENV_INFO from './env'
 import routes from './routes'
 import eventKeys from './eventKeys'
 import localStorageKeys from './localStorageKeys'
+import tmplIds from './tmplIds'
 
 const WX_VERSION = '0.0.1' // 微信小程序版本号
 const ALIPAY_VERSION = '0.0.1' // 微信小程序版本号
@@ -20,7 +21,8 @@ function getVerSion () {
 }
 
 const config = {
-  env,
+  ...ENV_INFO,
+  tmplIds: tmplIds[ENV_INFO.appid],
   routes,
   eventKeys,
   localStorageKeys,

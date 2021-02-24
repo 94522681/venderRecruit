@@ -1,6 +1,5 @@
 import React, { Component, useEffect, useState } from 'react'
-import { View, Button, Text } from '@tarojs/components'
-import { observer, inject } from 'mobx-react'
+import { View } from '@tarojs/components'
 
 import './index.less'
 
