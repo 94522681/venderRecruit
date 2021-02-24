@@ -5,8 +5,9 @@ interface IOpt {
   expires?: number // 失效时间，值为相对时间，多少毫秒后失效 
 }
 
-interface IData {
-  _storageExpores?: number
+interface IData<T> {
+  _storageExpores: number
+  data: T
 }
 
 const Storage = {
@@ -16,15 +17,19 @@ const Storage = {
    * @param {any} data 
    * @param {object} opt 存入缓存设置 { expires: 失效时间，值为相对时间，多少毫秒后失效 }
    */
-  setStorage: <T>(key: string, data: T & IData, opt?: IOpt): Promise<boolean> => {
+  setStorage: <T>(key: string, data: T, opt?: IOpt): Promise<boolean> => {
     return new Promise((resolve) => {
+      let newData: T | IData<T> = data
       if (opt) {
         // 设置了失效时间
         if (opt.expires) {
-          data._storageExpores = opt.expires + Date.now()
+          newData = {
+            _storageExpores: opt.expires + Date.now(),
+            data
+          }
         }
       }
-      Taro.setStorage({ key, data }).then(() => resolve(true), () => resolve(false))
+      Taro.setStorage({ key, data: newData }).then(() => resolve(true), () => resolve(false))
     })
   },
 
@@ -49,6 +54,7 @@ const Storage = {
               resolve(undefined)
               return
             }
+            resolve(currentData.data)
           }
           resolve(currentData)
         },
@@ -76,6 +82,30 @@ const Storage = {
     return new Promise(resolve => {
       Taro.clearStorage().then(() => resolve(true), () => resolve(false))
     })
+  },
+
+  /**
+   * 获取缓存-同步
+   */
+  getStorageSync: <T>(key: string): T | undefined => {
+    try {
+      const res = Taro.getStorageSync<T | IData<T>>(key)
+      if (!res) return undefined
+
+      // 如果有缓存
+      if (typeof res === 'object' && (res as IData<T>)._storageExpores) {
+        // 缓存失效
+        if (Date.now() > (res as IData<T>)._storageExpores) {
+          console.warn(`缓存【${key}】已经失效`)
+          Storage.removeStorage(key)
+          return undefined
+        }
+        return (res as IData<T>).data
+      }
+      return res as T
+    } catch (error) {
+      return undefined
+    }
   }
 }
 

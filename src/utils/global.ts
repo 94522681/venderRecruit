@@ -1,15 +1,27 @@
+/**
+ * 全局数据缓存，不要直接取值，通过get set设置
+ */
 interface IGlobal {
   userKey: string | undefined
 }
 
-class Global implements IGlobal {
+class Global {
   static isInstance: Global
-  userKey = undefined
+  private userKey: string | undefined = undefined
   
+  /**
+   * 设置值
+   * @param key 
+   * @param value 
+   */
   set(key: keyof IGlobal, value) {
     this[key] = value
   }
 
+  /**
+   * 获取值
+   * @param key 
+   */
   get(key: keyof IGlobal) {
     return this[key]
   }

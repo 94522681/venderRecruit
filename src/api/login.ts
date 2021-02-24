@@ -1,10 +1,12 @@
 import Taro from '@tarojs/taro'
 import { ApiGetSilenceLogin } from 'src/api/modal/login_api'
 import { Storage } from 'src/adapter/api';
+import { Lodash, Global } from 'src/utils'
 import Config from 'src/config'
-import Lodash from './lodash'
-import Global from './global'
 
+/**
+ * 获取用户userKey
+ */
 export const getUserKey = Lodash.oneceRunFunction(async () => {
   let userKey = Global.get('userKey')
   if (!userKey) {
